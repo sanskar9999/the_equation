@@ -1,0 +1,523 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>The Love Equation ❤️</title>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@700&family=Quicksand:wght@400;600;700&display=swap"
+        rel="stylesheet">
+    <style>
+        :root {
+            --primary: #ff4d6d;
+            --primary-light: #ff758f;
+            --bg-gradient-1: #ff9a9e;
+            --bg-gradient-2: #fecfef;
+            --text-dark: #590d22;
+            --white-glass: rgba(255, 255, 255, 0.75);
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Quicksand', sans-serif;
+        }
+
+        body {
+            background: linear-gradient(135deg, var(--bg-gradient-1) 0%, var(--bg-gradient-2) 100%);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            overflow: hidden;
+            color: var(--text-dark);
+        }
+
+        /* Floating Hearts Background */
+        .heart-bg {
+            position: absolute;
+            top: -10vh;
+            color: rgba(255, 77, 109, 0.3);
+            font-size: 2rem;
+            animation: floatUp linear infinite;
+            z-index: 0;
+        }
+
+        @keyframes floatUp {
+            0% {
+                transform: translateY(110vh) scale(0.5) rotate(0deg);
+                opacity: 1;
+            }
+
+            100% {
+                transform: translateY(-10vh) scale(1.2) rotate(360deg);
+                opacity: 0;
+            }
+        }
+
+        /* Main Container */
+        .glass-card {
+            background: var(--white-glass);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.5);
+            border-radius: 30px;
+            padding: 40px;
+            width: 90%;
+            max-width: 500px;
+            box-shadow: 0 15px 35px rgba(255, 77, 109, 0.2);
+            text-align: center;
+            z-index: 10;
+            position: relative;
+            transition: all 0.5s ease;
+        }
+
+        h1,
+        h2 {
+            font-family: 'Dancing Script', cursive;
+            color: var(--primary);
+        }
+
+        h1 {
+            font-size: 3rem;
+            margin-bottom: 10px;
+        }
+
+        h2 {
+            font-size: 2.2rem;
+            margin-bottom: 20px;
+        }
+
+        p.subtitle {
+            font-size: 1.1rem;
+            margin-bottom: 30px;
+            color: #800f2f;
+            font-weight: 600;
+        }
+
+        /* Screens */
+        .screen {
+            display: none;
+            animation: fadeIn 0.6s ease forwards;
+        }
+
+        .screen.active {
+            display: block;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* Buttons */
+        .btn {
+            background: linear-gradient(45deg, var(--primary), var(--primary-light));
+            color: white;
+            border: none;
+            padding: 15px 30px;
+            font-size: 1.2rem;
+            font-weight: 700;
+            border-radius: 50px;
+            cursor: pointer;
+            box-shadow: 0 8px 15px rgba(255, 77, 109, 0.3);
+            transition: all 0.3s ease;
+            width: 100%;
+            margin-bottom: 15px;
+        }
+
+        .btn:hover {
+            transform: translateY(-3px) scale(1.02);
+            box-shadow: 0 12px 20px rgba(255, 77, 109, 0.4);
+        }
+
+        .btn-option {
+            background: white;
+            color: var(--primary);
+            border: 2px solid var(--primary-light);
+            font-size: 1rem;
+            padding: 12px 20px;
+        }
+
+        .btn-option:hover {
+            background: var(--primary-light);
+            color: white;
+        }
+
+        /* Progress Bar */
+        .progress-container {
+            width: 100%;
+            height: 10px;
+            background: rgba(255, 77, 109, 0.2);
+            border-radius: 10px;
+            margin-bottom: 30px;
+            position: relative;
+        }
+
+        .progress-bar {
+            height: 100%;
+            background: var(--primary);
+            border-radius: 10px;
+            width: 0%;
+            transition: width 0.4s ease;
+        }
+
+        .progress-icon {
+            position: absolute;
+            top: -8px;
+            left: 0%;
+            font-size: 1.5rem;
+            transition: left 0.4s ease;
+            transform: translateX(-50%);
+        }
+
+        /* Loading Screen */
+        .math-equation {
+            font-family: 'Courier New', Courier, monospace;
+            font-size: 1.1rem;
+            color: var(--primary);
+            margin: 20px 0;
+            font-weight: bold;
+            height: 60px;
+        }
+
+        .pulsing-heart {
+            font-size: 5rem;
+            animation: pulse 1s infinite;
+            margin: 20px 0;
+        }
+
+        @keyframes pulse {
+            0% {
+                transform: scale(1);
+            }
+
+            50% {
+                transform: scale(1.2);
+            }
+
+            100% {
+                transform: scale(1);
+            }
+        }
+
+        /* Result Screen */
+        .score-circle {
+            width: 150px;
+            height: 150px;
+            border-radius: 50%;
+            background: white;
+            border: 8px solid var(--primary);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin: 0 auto 20px auto;
+            font-size: 3rem;
+            font-weight: 700;
+            color: var(--primary);
+            box-shadow: 0 0 30px rgba(255, 77, 109, 0.4);
+        }
+
+        .breakdown {
+            text-align: left;
+            background: rgba(255, 255, 255, 0.5);
+            padding: 15px;
+            border-radius: 15px;
+            margin-bottom: 20px;
+            font-size: 0.9rem;
+        }
+
+        .breakdown p {
+            margin: 5px 0;
+            display: flex;
+            justify-content: space-between;
+        }
+
+        .breakdown span {
+            font-weight: bold;
+            color: var(--primary);
+        }
+    </style>
+</head>
+
+<body>
+
+    <!-- Background Hearts -->
+    <div id="hearts-container"></div>
+
+    <div class="glass-card">
+
+        <!-- START SCREEN -->
+        <div id="screen-start" class="screen active">
+            <h1>The Love Equation</h1>
+            <p class="subtitle">Calculating the exact probability of you two ending up together based on the laws of the
+                universe. ✨</p>
+            <div class="pulsing-heart">💖</div>
+            <button class="btn" onclick="startQuiz()">Calculate Our Fate</button>
+        </div>
+
+        <!-- QUESTION SCREEN -->
+        <div id="screen-question" class="screen">
+            <div class="progress-container">
+                <div class="progress-bar" id="progress-bar"></div>
+                <div class="progress-icon" id="progress-icon">💘</div>
+            </div>
+            <h2 id="question-title">Question</h2>
+            <p class="subtitle" id="question-text">Question text goes here?</p>
+            <div id="options-container">
+                <!-- Options injected via JS -->
+            </div>
+        </div>
+
+        <!-- LOADING SCREEN -->
+        <div id="screen-loading" class="screen">
+            <h2>Crunching the Numbers...</h2>
+            <div class="pulsing-heart">💓</div>
+            <p>Applying the Master Equation:</p>
+            <div class="math-equation" id="math-display">P(Together) = P(Exist) × P(Proximity)...</div>
+        </div>
+
+        <!-- RESULT SCREEN -->
+        <div id="screen-result" class="screen">
+            <h2>Your Compatibility Score</h2>
+            <div class="score-circle" id="final-score">100%</div>
+            <h3 id="result-title" style="color: var(--text-dark); margin-bottom: 10px;">Soulmates!</h3>
+            <p id="result-desc" style="margin-bottom: 20px;">The universe aligned perfectly for you two.</p>
+
+            <div class="breakdown">
+                <p>Existence & Timing: <span id="score-1">100%</span></p>
+                <p>Proximity & Encounters: <span id="score-2">100%</span></p>
+                <p>Initiation & Spark: <span id="score-3">100%</span></p>
+                <p>Values & Compatibility: <span id="score-4">100%</span></p>
+                <p>Retention & Resilience: <span id="score-5">100%</span></p>
+            </div>
+
+            <button class="btn" onclick="location.reload()">Recalculate 🔄</button>
+        </div>
+
+    </div>
+
+    <script>
+        // Generate floating background hearts
+        function createHearts() {
+            const container = document.getElementById('hearts-container');
+            const heartSymbols = ['❤️', '💖', '💝', '💗', '💓', '💘', '✨'];
+            for (let i = 0; i < 20; i++) {
+                let heart = document.createElement('div');
+                heart.className = 'heart-bg';
+                heart.innerText = heartSymbols[Math.floor(Math.random() * heartSymbols.length)];
+                heart.style.left = Math.random() * 100 + 'vw';
+                heart.style.animationDuration = (Math.random() * 10 + 5) + 's';
+                heart.style.animationDelay = Math.random() * 5 + 's';
+                heart.style.fontSize = (Math.random() * 1.5 + 1) + 'rem';
+                container.appendChild(heart);
+            }
+        }
+        createHearts();
+
+        // The 6 Stages of the Probabilistic Model mapped to cute questions
+        const questions = [
+            {
+                stage: "P(Exist)",
+                title: "Stage 1: Existence",
+                text: "Are you both existing in the same chapter of life right now?",
+                options: [
+                    { text: "Exactly the same vibes!", value: 95 },
+                    { text: "Mostly, with some overlap.", value: 75 },
+                    { text: "Different worlds, but connected.", value: 50 },
+                    { text: "It's... complicated.", value: 30 }
+                ]
+            },
+            {
+                stage: "P(Proximity)",
+                title: "Stage 2: Proximity",
+                text: "How often do you share the same physical or digital space?",
+                options: [
+                    { text: "Every single day!", value: 98 },
+                    { text: "A few times a week.", value: 80 },
+                    { text: "Once in a blue moon.", value: 40 },
+                    { text: "Long distance but loyal.", value: 65 }
+                ]
+            },
+            {
+                stage: "P(Encounter)",
+                title: "Stage 3: The Encounter",
+                text: "When your paths do cross, how meaningful are your interactions?",
+                options: [
+                    { text: "Deep, soulful talks.", value: 95 },
+                    { text: "Fun and adventurous!", value: 85 },
+                    { text: "Quick chats and smiles.", value: 60 },
+                    { text: "Mostly group settings.", value: 45 }
+                ]
+            },
+            {
+                stage: "P(Initiation)",
+                title: "Stage 4: Initiation",
+                text: "How strong is the mutual attraction and 'spark'?",
+                options: [
+                    { text: "Literal fireworks! 🎆", value: 100 },
+                    { text: "Warm and cozy feelings.", value: 80 },
+                    { text: "Still finding our rhythm.", value: 60 },
+                    { text: "A bit of a slow burn.", value: 50 }
+                ]
+            },
+            {
+                stage: "P(Compatibility)",
+                title: "Stage 5: Compatibility",
+                text: "Do your core values (future plans, lifestyle, family) align?",
+                options: [
+                    { text: "In total synchronicity!", value: 95 },
+                    { text: "We agree on the big stuff.", value: 85 },
+                    { text: "Learning and growing.", value: 70 },
+                    { text: "Working through differences.", value: 50 }
+                ]
+            },
+            {
+                stage: "P(Retention)",
+                title: "Stage 6: Retention",
+                text: "How do you handle storms, stress, and disagreements?",
+                options: [
+                    { text: "We're a team, always.", value: 95 },
+                    { text: "We talk it out maturely.", value: 85 },
+                    { text: "Things can get a bit rocky.", value: 60 },
+                    { text: "We're still learning how.", value: 40 }
+                ]
+            }
+        ];
+
+        let currentQ = 0;
+        let scores = [];
+
+        function switchScreen(hideId, showId) {
+            document.getElementById(hideId).classList.remove('active');
+            document.getElementById(showId).classList.add('active');
+        }
+
+        function startQuiz() {
+            switchScreen('screen-start', 'screen-question');
+            renderQuestion();
+        }
+
+        function renderQuestion() {
+            const q = questions[currentQ];
+            document.getElementById('question-title').innerText = q.title;
+            document.getElementById('question-text').innerText = q.text;
+
+            // Update Progress
+            const progressPct = (currentQ / questions.length) * 100;
+            document.getElementById('progress-bar').style.width = progressPct + '%';
+            document.getElementById('progress-icon').style.left = progressPct + '%';
+
+            const optionsContainer = document.getElementById('options-container');
+            optionsContainer.innerHTML = '';
+
+            q.options.forEach(opt => {
+                const btn = document.createElement('button');
+                btn.className = 'btn btn-option';
+                btn.innerText = opt.text;
+                btn.onclick = () => handleAnswer(opt.value);
+                optionsContainer.appendChild(btn);
+            });
+        }
+
+        function handleAnswer(value) {
+            scores.push(value);
+            currentQ++;
+
+            if (currentQ < questions.length) {
+                renderQuestion();
+            } else {
+                document.getElementById('progress-bar').style.width = '100%';
+                document.getElementById('progress-icon').style.left = '100%';
+                setTimeout(() => {
+                    switchScreen('screen-question', 'screen-loading');
+                    simulateCalculation();
+                }, 400);
+            }
+        }
+
+        function simulateCalculation() {
+            const equations = [
+                "P(Together) = P(Exist) × P(Proximity)...",
+                "∑ Love_Variables + Spark_Factor",
+                "1 - e^(-λ·t) ... Solving for Time",
+                "max(0, (A_12 · A_21) - F)",
+                "∫ S(t) dt ... Analyzing Compatibility",
+                "e^(-γL(1-σ)) ... Checking Retention",
+                "Love Matrix Solved! ❤️"
+            ];
+
+            let eqIndex = 0;
+            const eqDisplay = document.getElementById('math-display');
+
+            const interval = setInterval(() => {
+                eqIndex++;
+                if (eqIndex < equations.length) {
+                    eqDisplay.innerText = equations[eqIndex];
+                } else {
+                    clearInterval(interval);
+                    showResults();
+                }
+            }, 800);
+        }
+
+        function showResults() {
+            switchScreen('screen-loading', 'screen-result');
+
+            // Calculate final score (Average of all stages to keep it optimistic and cute)
+            const total = scores.reduce((a, b) => a + b, 0);
+            let finalPercentage = Math.round(total / questions.length);
+
+            // Add a tiny bit of random "magic" (+0 to 3%)
+            finalPercentage = Math.min(100, finalPercentage + Math.floor(Math.random() * 4));
+
+            // Animate score counter
+            let currentCount = 0;
+            const scoreEl = document.getElementById('final-score');
+            const countInterval = setInterval(() => {
+                currentCount += 2;
+                if (currentCount >= finalPercentage) {
+                    currentCount = finalPercentage;
+                    clearInterval(countInterval);
+                }
+                scoreEl.innerText = currentCount + '%';
+            }, 20);
+
+            // Set text based on score
+            const titleEl = document.getElementById('result-title');
+            const descEl = document.getElementById('result-desc');
+
+            if (finalPercentage >= 90) {
+                titleEl.innerText = "Written in the Stars! ✨";
+                descEl.innerText = "The math doesn't lie. You two are an absolute statistical anomaly of perfect love.";
+            } else if (finalPercentage >= 75) {
+                titleEl.innerText = "A Beautiful Connection 💕";
+                descEl.innerText = "The probabilities are highly in your favor! Keep nurturing that spark.";
+            } else if (finalPercentage >= 60) {
+                titleEl.innerText = "A Growing Flame 🔥";
+                descEl.innerText = "There's definitely potential here. Every great equation takes time to balance out.";
+            } else {
+                titleEl.innerText = "Defying the Odds 🎲";
+                descEl.innerText = "The math says it's tough, but love is the one variable that defies all logic!";
+            }
+
+            // Populate breakdown
+            document.getElementById('score-1').innerText = scores[0] + '%';
+            document.getElementById('score-2').innerText = Math.round((scores[1] + scores[2]) / 2) + '%'; // Combine proximity & encounter
+            document.getElementById('score-3').innerText = scores[3] + '%';
+            document.getElementById('score-4').innerText = scores[4] + '%';
+            document.getElementById('score-5').innerText = scores[5] + '%';
+        }
+    </script>
+</body>
+
+</html>
